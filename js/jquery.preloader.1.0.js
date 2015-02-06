@@ -25,9 +25,9 @@
 				preloadParent:'a',
 				checkTimer: 300,
 				ondone: function() {
-					
+					console.log('Images have loaded successfully!');
 				},
-				oneachload: function() {
+				oneachload: function(image) {
 
 				},
 				fadein:500
@@ -67,6 +67,43 @@
 
 			//Create array from each array collected above.
 			images = $.makeArray(images);
+
+			init = function() {
+				timer = setInterval(function() {
+
+					if (counter >= checkImages.length) {
+						clearInterval(timer);
+						options.done();
+						return;
+					}
+
+					for(i=0; i<images.length; i++) {
+						if (images[i].complete = true) {
+
+							if (checkImages[i] == false) {
+								checkImages[i] = truel
+								options.oneachload(images[i]);
+								counter++;
+								delayVal = delaySum + options.delay;
+							}
+
+							$(images[i])
+								.css({'visibilty': 'visible'})
+								.delay(delayVal)
+								.animate({opacity: 1}, options.fadein, function() {
+									$(this)
+										.parent()
+										.removeClass('preloader');
+								});
+
+								counter++;
+						}
+					}
+				}, options.checkTimer);
+			}
+
+			//kick off the plugin.
+			init();
 
 		};
 
